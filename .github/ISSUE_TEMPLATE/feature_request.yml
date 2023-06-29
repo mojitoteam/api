@@ -25,6 +25,8 @@ body:
         - Dependency update
         - CI/CD related changes
         - Chore (non-code changes)
+    validations:
+      required: true
   - type: textarea
     attributes:
       label: The Problem
