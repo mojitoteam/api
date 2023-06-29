@@ -32,11 +32,6 @@ install in your development environment to work on the project:
 
 You can install these tools with the following commands on Ubuntu:
 
-.. code-block:: bash
-
-  $ sudo apt install git curl python3.11
-  $ curl -sSL https://install.python-poetry.org | python3.11 -
-
 After installing the required tools, you can install some optional tools and
 libraries that will help you to develop the project:
 
