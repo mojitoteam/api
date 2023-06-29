@@ -1,2 +1,3 @@
-# api
-Repository for Mojito API service.
+# Mojito API
+
+This is the repository for the Mojito API.

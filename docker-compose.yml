@@ -3,8 +3,7 @@ services:
     image: mojito-api:dev
     container_name: api
     build:
-      context: ../..
-      dockerfile: ./docker/django/Dockerfile
+      context: .
       target: development
       args:
         - DJANGO_ENV=development
