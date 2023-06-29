@@ -9,6 +9,32 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 django = "^4.2.2"
+djangorestframework = "^3.14.0"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.3.3"
+black = "^23.3.0"
+isort = "^5.12.0"
+commitizen = "^3.5.2"
+flake8 = "^6.0.0"
+mypy = "^1.4.1"
+coverage = "^7.2.7"
+django-stubs = {version = "^4.2.3", extras = ["compatible-mypy"]}
+djangorestframework-stubs = {version = "^3.14.2", extras = ["compatible-mypy"]}
+
+[tool.black]
+color = true
+line-length = 79
+
+[tool.isort]
+profile = "black"
+line_length = 79
+
+[tool.commitizen]
+version = "0.5.0"
+version_files = ["pyproject.toml"]
+update_changelog_on_bump = true
+changelog_incremental = true
 
 [build-system]
 requires = ["poetry-core"]
