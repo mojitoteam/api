@@ -1,0 +1,2 @@
+sphinx>=7.0.1,<8.0.0
+sphinx-material>=0.0.35,<1.0.0
