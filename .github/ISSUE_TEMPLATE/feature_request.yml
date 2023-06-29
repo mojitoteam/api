@@ -1,0 +1,36 @@
+assignees:
+  - 'bitterteriyaki'
+
+body:
+  - type: input
+    attributes:
+      label: Summary
+      description: A simple summary of your feature request.
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      multiple: false
+      label: What is the feature request for?
+      options:
+        - Documentation update
+        - Code style update (formatting, local variables)
+        - Refactoring (no functional changes, no API changes)
+        - Dependency update
+        - CI/CD related changes
+        - Chore (non-code changes)
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: The Problem
+      description: >
+        What problem is your feature trying to solve?
+    validations:
+      required: true
+
+name: Feature Request
+labels: [feature request]
+
+title: '[feature request] '
+description: Suggest a feature for this service.
