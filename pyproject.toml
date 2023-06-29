@@ -22,6 +22,13 @@ coverage = "^7.2.7"
 django-stubs = {version = "^4.2.3", extras = ["compatible-mypy"]}
 djangorestframework-stubs = {version = "^3.14.2", extras = ["compatible-mypy"]}
 
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "^7.0.1"
+sphinx-material = "^0.0.35"
+
 [tool.black]
 color = true
 line-length = 79
