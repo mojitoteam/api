@@ -1,10 +1,25 @@
-version: '3.9'
-
 services:
-  web:
-    build: .
-    command: python manage.py runserver 0.0.0.0:8000
+  django:
+    image: mojito-api:dev
+    container_name: api
+    build:
+      context: ../..
+      dockerfile: ./docker/django/Dockerfile
+      target: development
+      args:
+        - DJANGO_ENV=development
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+      cache_from:
+        - "mojito-api:dev"
+        - "mojito-api:latest"
+        - "*"
     volumes:
       - .:/app
     ports:
-      - '8000:8000'
+      - 8000:8000
+
+    command: python -Wd manage.py runserver 0.0.0.0:8000
+
+volumes:
+  data:
