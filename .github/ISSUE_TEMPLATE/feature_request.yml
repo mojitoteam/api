@@ -19,6 +19,7 @@ body:
       multiple: false
       label: What is the feature request for?
       options:
+        - Feature request
         - Documentation update
         - Code style update (formatting, local variables)
         - Refactoring (no functional changes, no API changes)
