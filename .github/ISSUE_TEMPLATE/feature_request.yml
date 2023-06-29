@@ -32,3 +32,5 @@ body:
       label: The Problem
       description: >
         What problem is your feature trying to solve?
+    validations:
+      required: true
