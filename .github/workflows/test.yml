@@ -37,8 +37,4 @@ jobs:
           poetry install --with dev
 
       - name: Run tests
-        run: |
-          black --check .
-          flake8 .
-          isort --check .
-          mypy .
+        uses: pre-commit/action@v3.0.0
