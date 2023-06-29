@@ -42,5 +42,3 @@ jobs:
           flake8 .
           isort --check .
           mypy .
-
-
