@@ -12,6 +12,14 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from typing import List
+from server.settings.development import *
 
-urlpatterns: List[str] = []
+###############
+#  Databases  #
+###############
+
+# Since we are in a CI environment, we don't want to use the default
+# database. PostgreSQL is too heavy for a CI environment, so we use
+# SQLite instead.
+
+DATABASES["default"] = {"ENGINE": "django.db.backends.sqlite3"}

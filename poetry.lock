@@ -396,6 +396,22 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-environ"
+version = "0.10.0"
+description = "A package that allows you to utilize 12factor inspired environment variables to configure your Django application."
+optional = false
+python-versions = ">=3.5,<4"
+files = [
+    {file = "django-environ-0.10.0.tar.gz", hash = "sha256:b3559a91439c9d774a9e0c1ced872364772c612cdf6dc919506a2b13f7a77225"},
+    {file = "django_environ-0.10.0-py2.py3-none-any.whl", hash = "sha256:510f8c9c1d0a38b0815f91504270c29440a0cf44fab07f55942fa8d31bbb9be6"},
+]
+
+[package.extras]
+develop = ["coverage[toml] (>=5.0a4)", "furo (>=2021.8.17b43,<2021.9.dev0)", "pytest (>=4.6.11)", "sphinx (>=3.5.0)", "sphinx-notfound-page"]
+docs = ["furo (>=2021.8.17b43,<2021.9.dev0)", "sphinx (>=3.5.0)", "sphinx-notfound-page"]
+testing = ["coverage[toml] (>=5.0a4)", "pytest (>=4.6.11)"]
+
+[[package]]
 name = "django-stubs"
 version = "4.2.3"
 description = "Mypy stubs for Django"
@@ -1441,4 +1457,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "cd64e1bc20284e2531f968ed8f6796e0ff5e42e7d8bd436c8dbd2ee96a7859a2"
+content-hash = "6b655cd440b72d348a9d6d0c3e52fa1df9f5c70cc332fce5ec57e29f1362faf1"

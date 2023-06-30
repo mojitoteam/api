@@ -12,6 +12,15 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from typing import List
+from os.path import join
+from pathlib import Path
 
-urlpatterns: List[str] = []
+from environ import Env
+
+BASE_DIR = Path(__file__).parent.parent.parent
+
+# Load environment variables from config/.env file. See
+# https://django-environ.readthedocs.io/en/latest/
+
+env = Env()
+env.read_env(join(BASE_DIR, "config", ".env"))
