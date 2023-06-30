@@ -83,7 +83,14 @@ RUN --mount=type=cache,target="$POETRY_CACHE_DIR" \
     $(if [ "${DJANGO_ENV}" = 'production' ]; then echo '--only main'; fi) \
     --no-interaction --no-ansi
 
+COPY ./docker/django/entrypoint.sh /docker-entrypoint.sh
+
+RUN chmod +x '/docker-entrypoint.sh'
+
 USER web
+
+# We customize how our app is loaded with the custom entrypoint:
+ENTRYPOINT ["tini", "--", "/docker-entrypoint.sh"]
 
 
 ######################
