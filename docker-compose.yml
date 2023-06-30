@@ -4,6 +4,7 @@ services:
     container_name: api
     build:
       context: .
+      dockerfile: docker/django/Dockerfile
       target: development
       args:
         - DJANGO_ENV=development
@@ -17,8 +18,26 @@ services:
       - .:/app
     ports:
       - 8000:8000
-
+    networks:
+      - main
+    env_file:
+      - config/.env
     command: python -Wd manage.py runserver 0.0.0.0:8000
+
+  postgres:
+    image: postgres:15.3-alpine
+    container_name: postgres
+    volumes:
+      - data:/var/lib/postgresql/data
+    networks:
+      - main
+    env_file:
+      - config/.env
+    restart: unless-stopped
+
 
 volumes:
   data:
+
+networks:
+  main:
