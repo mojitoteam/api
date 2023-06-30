@@ -17,6 +17,7 @@ jobs:
 
     env:
       DATABASE_URL: "sqlite:///db.sqlite3"
+      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
 
     steps:
       - name: Checkout repository
@@ -54,3 +55,8 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage.xml
+
+      - name: Upload tests coverage report (Code Climate)
+        uses: paambaati/codeclimate-action@v3.2.0
+        with:
+          coverageCommand: coverage report
