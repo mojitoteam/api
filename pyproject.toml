@@ -40,7 +40,7 @@ profile = "black"
 line_length = 79
 
 [tool.commitizen]
-version = "0.5.0"
+version = "0.1.0"
 version_files = ["pyproject.toml"]
 update_changelog_on_bump = true
 changelog_incremental = true
