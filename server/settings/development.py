@@ -12,6 +12,17 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from typing import List
+from server.settings.base import *
 
-urlpatterns: List[str] = []
+######################
+#  General Settings  #
+######################
+
+ALLOWED_HOSTS = ["*"]
+
+# In development, we don't need a secure password hasher. We can use
+# MD5 instead, this is because we don't need to worry about security
+# in development. However, we should use a secure password hasher in
+# production, like PBKDF2 or Argon2.
+
+PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
