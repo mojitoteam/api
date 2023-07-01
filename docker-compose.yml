@@ -1,7 +1,7 @@
 services:
   django:
     image: mojito-api:dev
-    container_name: api
+    container_name: django
     build:
       context: .
       dockerfile: docker/django/Dockerfile
