@@ -42,12 +42,6 @@ class UserManager(BaseUserManager[User]):
         :class:`apps.users.models.User`
             A new user object with the provided data.
         """
-        if not username:
-            raise ValueError("Users must have an username.")
-
-        if not email:
-            raise ValueError("Users must have an email address.")
-
         user = self.model(username=username, email=self.normalize_email(email))
         user.set_password(password)
         user.save()
