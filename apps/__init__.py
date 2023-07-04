@@ -11,10 +11,3 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
-
-
-from django.urls import include, path
-
-urlpatterns = [
-    path("", include("apps.users.urls", namespace="users")),
-]
