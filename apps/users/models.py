@@ -12,8 +12,10 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db.models import BooleanField, CharField, EmailField
+from itsdangerous import URLSafeTimedSerializer
 
 from apps.users.managers import UserManager
 from core.models import TimestampedModel
@@ -21,6 +23,8 @@ from core.models import TimestampedModel
 
 class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     """Represents an user."""
+
+    id: int
 
     email = EmailField(db_index=True, max_length=256, unique=True)
     username = CharField(db_index=True, max_length=32, unique=True)
@@ -42,3 +46,21 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
 
     class Meta:
         db_table = "users"
+
+    @property
+    def token(self) -> str:
+        """Creates a token for the user. This token is used to verify
+        the user authenticity when they make requests to the API.
+
+        Returns
+        -------
+        :class:`str`
+            A token for the user.
+        """
+        serializer = URLSafeTimedSerializer(settings.SECRET_KEY, salt="auth")
+        token = serializer.dumps(self.id)
+
+        if isinstance(token, bytes):
+            return token.decode("utf-8")
+
+        return token
