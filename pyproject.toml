@@ -12,6 +12,7 @@ django = "^4.2.2"
 psycopg2 = "^2.9.6"
 djangorestframework = "^3.14.0"
 django-environ = "^0.10.0"
+itsdangerous = "^2.1.2"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.3.3"

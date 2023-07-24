@@ -12,9 +12,11 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from django.apps import AppConfig
 
-from django.urls import include, path
+default_app_config = "apps.users.UsersConfig"
 
-urlpatterns = [
-    path("", include("apps.users.urls", namespace="users")),
-]
+
+class UsersConfig(AppConfig):
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "apps.users"
