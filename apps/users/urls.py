@@ -12,9 +12,13 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from rest_framework.routers import SimpleRouter
 
-from django.urls import include, path
+from apps.users.views import SelfUserView
 
-urlpatterns = [
-    path("", include("apps.users.urls", namespace="users")),
-]
+app_name = "users"
+
+router = SimpleRouter(trailing_slash=False)
+router.register(r"users", SelfUserView, basename="self-user")
+
+urlpatterns = router.urls
