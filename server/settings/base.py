@@ -13,7 +13,6 @@ GNU General Public License for more details.
 """
 
 from os.path import join
-from typing import List
 
 from server.settings import BASE_DIR, env
 
@@ -43,6 +42,16 @@ USE_I18N = True
 USE_TZ = True
 
 LOCALE_PATHS = [join(BASE_DIR, "locale")]
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# The model to use to represent an user.
+# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-user-model
+
+AUTH_USER_MODEL = "users.User"
 
 #################
 #  Middlewares  #
@@ -85,7 +94,9 @@ THIRD_PARTY_APPS = [
     "rest_framework",
 ]
 
-LOCAL_APPS: List[str] = []
+LOCAL_APPS = [
+    "apps.users",
+]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
