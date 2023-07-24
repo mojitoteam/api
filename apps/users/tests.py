@@ -30,6 +30,9 @@ class SelfUserTestCase(APITestCase):
 
     def test_create_user_sucessfully(self) -> None:
         res = self.client.post(self.url, self.data)
+        data = res.data
+
+        expected = {"token": data["token"]}
 
         self.assertEqual(res.status_code, HTTP_201_CREATED)
-        self.assertDictEqual(res.data, {})
+        self.assertDictEqual(res.data, expected)
