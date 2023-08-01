@@ -19,6 +19,10 @@
     "DATABASE_URL": {
       "description": "Database URL",
       "value": "sqlite:///db.sqlite"
+    },
+    "DISABLE_COLLECTSTATIC": {
+      "description": "Disable collectstatic",
+      "value": "1"
     }
   }
 }
