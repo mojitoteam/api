@@ -1,0 +1,28 @@
+{
+  "buildpacks": [
+    {
+      "url": "https://github.com/moneymeets/python-poetry-buildpack.git"
+    },
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "env": {
+    "PYTHON_RUNTIME_VERSION": {
+      "description": "Python runtime version",
+      "value": "3.11.4"
+    },
+    "POETRY_VERSION": {
+      "description": "Poetry version",
+      "value": "1.5.1"
+    },
+    "DATABASE_URL": {
+      "description": "Database URL",
+      "value": "sqlite:///db.sqlite"
+    },
+    "DISABLE_COLLECTSTATIC": {
+      "description": "Disable collectstatic",
+      "value": "1"
+    }
+  }
+}

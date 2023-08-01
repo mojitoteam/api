@@ -58,6 +58,7 @@ AUTH_USER_MODEL = "users.User"
 #################
 
 MIDDLEWARE = [
+    "core.middlewares.RemoveHeaders",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
