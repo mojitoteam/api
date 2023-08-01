@@ -15,6 +15,10 @@
     "POETRY_VERSION": {
       "description": "Poetry version",
       "value": "1.5.1"
+    },
+    "DATABASE_URL": {
+      "description": "Database URL",
+      "value": "sqlite:///db.sqlite"
     }
   }
 }
