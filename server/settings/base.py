@@ -59,6 +59,7 @@ AUTH_USER_MODEL = "users.User"
 
 MIDDLEWARE = [
     "core.middlewares.RemoveHeaders",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -93,6 +94,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     "rest_framework",
+    "corsheaders",
 ]
 
 LOCAL_APPS = [
@@ -143,3 +145,12 @@ REST_FRAMEWORK = {
     "DEFAULT_VERSIONING_CLASS": DEFAULT_VERSIONING_CLASS,
     "TEST_REQUEST_DEFAULT_FORMAT": TEST_REQUEST_DEFAULT_FORMAT,
 }
+
+#######################
+# Django Cors Headers #
+#######################
+
+# We must change this in the future, but since we are in development,
+# we can allow all origins.
+
+CORS_ALLOW_ALL_ORIGINS = True
