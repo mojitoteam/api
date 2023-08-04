@@ -26,3 +26,9 @@ ALLOWED_HOSTS = ["*"]
 # production, like PBKDF2 or Argon2.
 
 PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
+
+#########################
+#  Django CORS Headers  #
+#########################
+
+CORS_ALLOW_ALL_ORIGINS = True
