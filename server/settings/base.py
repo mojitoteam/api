@@ -48,6 +48,10 @@ LOCALE_PATHS = [join(BASE_DIR, "locale")]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+####################
+#  Authentication  #
+####################
+
 # The model to use to represent an user.
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-user-model
 
@@ -139,7 +143,10 @@ DEFAULT_VERSIONING_CLASS = "rest_framework.versioning.URLPathVersioning"
 
 TEST_REQUEST_DEFAULT_FORMAT = "json"
 
+DEFAULT_RENDERER_CLASSES = ["rest_framework.renderers.JSONRenderer"]
+
 REST_FRAMEWORK = {
     "DEFAULT_VERSIONING_CLASS": DEFAULT_VERSIONING_CLASS,
     "TEST_REQUEST_DEFAULT_FORMAT": TEST_REQUEST_DEFAULT_FORMAT,
+    "DEFAULT_RENDERER_CLASSES": DEFAULT_RENDERER_CLASSES,
 }
