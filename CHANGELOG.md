@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.3.0 (2023-08-04)
+
+### Feat
+
+- add a settings file for production
+- set a custom view for 404 page
+- **core/middlewares**: delete many headers until we need them
+- **server**: add a custom middleware to remove useless headers
+
+### Fix
+
+- **server**: enable all CORS origins on development
+- **server**: set the default renderer class
+- disable collect static configuration on heroku app
+- add database url to the heroku app schema
+- add config vars to the heroku app schema
+
 ## 0.2.0 (2023-07-23)
 
 ### Feat

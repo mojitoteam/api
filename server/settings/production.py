@@ -12,11 +12,21 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from server.settings import env
+from server.settings.base import *
 
-from django.urls import include, path
+######################
+#  General Settings  #
+######################
 
-handler404 = "core.exceptions.page_not_found"
+DEBUG = False
 
-urlpatterns = [
-    path("", include("apps.users.urls", namespace="users")),
-]
+SECRET_KEY = env("DJANGO_SECRET_KEY")
+
+ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS")
+
+###############
+#  Databases  #
+###############
+
+DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)

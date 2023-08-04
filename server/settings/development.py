@@ -18,7 +18,7 @@ from server.settings.base import *
 #  General Settings  #
 ######################
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
 
 # In development, we don't need a secure password hasher. We can use
 # MD5 instead, this is because we don't need to worry about security
@@ -26,3 +26,9 @@ ALLOWED_HOSTS = ["*"]
 # production, like PBKDF2 or Argon2.
 
 PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
+
+#########################
+#  Django CORS Headers  #
+#########################
+
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]

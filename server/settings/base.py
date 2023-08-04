@@ -48,6 +48,10 @@ LOCALE_PATHS = [join(BASE_DIR, "locale")]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+####################
+#  Authentication  #
+####################
+
 # The model to use to represent an user.
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-user-model
 
@@ -58,6 +62,8 @@ AUTH_USER_MODEL = "users.User"
 #################
 
 MIDDLEWARE = [
+    "core.middlewares.RemoveHeaders",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -92,6 +98,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     "rest_framework",
+    "corsheaders",
 ]
 
 LOCAL_APPS = [
@@ -111,10 +118,10 @@ AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend"]
 ###############
 
 PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
     "django.contrib.auth.hashers.Argon2PasswordHasher",
     "django.contrib.auth.hashers.PBKDF2PasswordHasher",
     "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
-    "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
 ]
 
 # The list of validators that are used to check the strength of user's
@@ -138,7 +145,10 @@ DEFAULT_VERSIONING_CLASS = "rest_framework.versioning.URLPathVersioning"
 
 TEST_REQUEST_DEFAULT_FORMAT = "json"
 
+DEFAULT_RENDERER_CLASSES = ["rest_framework.renderers.JSONRenderer"]
+
 REST_FRAMEWORK = {
     "DEFAULT_VERSIONING_CLASS": DEFAULT_VERSIONING_CLASS,
     "TEST_REQUEST_DEFAULT_FORMAT": TEST_REQUEST_DEFAULT_FORMAT,
+    "DEFAULT_RENDERER_CLASSES": DEFAULT_RENDERER_CLASSES,
 }
