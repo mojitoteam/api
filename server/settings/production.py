@@ -12,23 +12,21 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from server.settings import env
 from server.settings.base import *
 
 ######################
 #  General Settings  #
 ######################
 
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
+DEBUG = False
 
-# In development, we don't need a secure password hasher. We can use
-# MD5 instead, this is because we don't need to worry about security
-# in development. However, we should use a secure password hasher in
-# production, like PBKDF2 or Argon2.
+SECRET_KEY = env("DJANGO_SECRET_KEY")
 
-PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
+ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS")
 
-#########################
-#  Django CORS Headers  #
-#########################
+###############
+#  Databases  #
+###############
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
+DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)
