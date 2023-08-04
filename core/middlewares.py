@@ -28,9 +28,11 @@ class RemoveHeaders:
     def __call__(self, request: HttpRequest) -> HttpResponse:
         response = self.get_response(request)
 
-        # We delete some headers that we don't want to show to the user.
-        del response["Server"]
-        del response["Vary"]
         del response["Allow"]
+        del response["Vary"]
+        del response["X-Frame-Options"]
+        del response["X-Content-Type-Options"]
+        del response["Referrer-Policy"]
+        del response["Cross-Origin-Opener-Policy"]
 
         return response
