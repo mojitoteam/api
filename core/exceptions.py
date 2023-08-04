@@ -12,11 +12,11 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from django.http import HttpRequest, JsonResponse
+from rest_framework.status import HTTP_404_NOT_FOUND
 
-from django.urls import include, path
 
-handler404 = "core.exceptions.page_not_found"
-
-urlpatterns = [
-    path("", include("apps.users.urls", namespace="users")),
-]
+def page_not_found(request: HttpRequest, exception: Exception) -> JsonResponse:
+    return JsonResponse(
+        {"detail": "Page not found."}, status=HTTP_404_NOT_FOUND
+    )
