@@ -13,11 +13,11 @@ GNU General Public License for more details.
 """
 
 
-from django.urls import include, path
+from django.apps import AppConfig
 
-handler404 = "core.exceptions.page_not_found"
+default_app_config = "apps.authentication.AuthenticationConfig"
 
-urlpatterns = [
-    path("", include("apps.users.urls", namespace="users")),
-    path("", include("apps.authentication.urls", namespace="authentication")),
-]
+
+class AuthenticationConfig(AppConfig):
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "apps.authentication"
