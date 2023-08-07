@@ -12,12 +12,12 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from django.urls import re_path
 
-from django.urls import include, path
+from apps.authentication.views import LoginView
 
-handler404 = "core.exceptions.page_not_found"
+app_name = "authentication"
 
 urlpatterns = [
-    path("", include("apps.users.urls", namespace="users")),
-    path("", include("apps.authentication.urls", namespace="authentication")),
+    re_path(r"^auth/login/?$", LoginView.as_view(), name="login"),
 ]

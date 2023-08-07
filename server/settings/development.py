@@ -18,7 +18,16 @@ from server.settings.base import *
 #  General Settings  #
 ######################
 
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
+ALLOWED_HOSTS = [
+    "localhost",
+    "0.0.0.0",
+    "127.0.0.1",
+    # Since we have an app running on Heroku, we need to add the
+    # Heroku app domain to the list of allowed hosts, otherwise
+    # Django will throw an exception when we try to access the
+    # app on Heroku.
+    ".herokuapp.com",
+]
 
 # In development, we don't need a secure password hasher. We can use
 # MD5 instead, this is because we don't need to worry about security

@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.0 (2023-08-06)
+
+### Feat
+
+- **apps/authentication**: create initial authentication app
+
+### Fix
+
+- **server/settings**: add the Heroku domain to the allowed hosts
+
 ## 0.3.0 (2023-08-04)
 
 ### Feat
