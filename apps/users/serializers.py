@@ -39,10 +39,16 @@ class SelfUserSerializer(ModelSerializer[User]):
 
     class Meta:
         model = User
-        # List all of the fields that could possibly be included in a
-        # request or response, including fields specified explicitly
-        # above.
         fields = ["username", "email", "password", "token"]
 
     def create(self, validated_data: Dict[str, str]) -> User:
         return User.objects.create_user(**validated_data)
+
+
+class UserSerializer(ModelSerializer[User]):
+    """Serializer for the users."""
+
+    class Meta:
+        model = User
+        fields = ["id", "username", "created_at"]
+        read_only_fields = fields
