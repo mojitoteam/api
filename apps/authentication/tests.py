@@ -40,7 +40,7 @@ class LoginTestCase(APITestCase):
 
 
 class TokenAuthenticationTestCase(APITestCase):
-    """ """
+    """Test case for the token authentication backend."""
 
     def setUp(self) -> None:
         self.auth = TokenAuthentication()
