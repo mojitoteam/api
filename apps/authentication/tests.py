@@ -114,3 +114,13 @@ class TokenAuthenticationTestCase(APITestCase):
 
         self.assertIsNotNone(res)
         self.assertTupleEqual(cast(Tuple[User, str], res), expected)
+
+    def test_authentication_header_prefix(self) -> None:
+        req = self.factory.get(
+            self.url,
+            self.payload,
+            HTTP_AUTHORIZATION=f"Token {self.user.token}",
+        )
+        header_prefix = self.auth.authenticate_header(req)
+
+        self.assertEqual(header_prefix, "Token")
