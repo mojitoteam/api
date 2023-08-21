@@ -12,14 +12,18 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
-from rest_framework.mixins import CreateModelMixin
-from rest_framework.permissions import AllowAny
+from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework.status import HTTP_200_OK
 from rest_framework.viewsets import GenericViewSet
 
 from apps.users.models import User
-from apps.users.serializers import SelfUserSerializer
+from apps.users.serializers import SelfUserSerializer, UserSerializer
+from apps.users.utils import get_user
 
 if TYPE_CHECKING:
     UserGenericViewSet = GenericViewSet[User]
@@ -32,3 +36,25 @@ class SelfUserView(CreateModelMixin, UserGenericViewSet):
 
     permission_classes = [AllowAny]
     serializer_class = SelfUserSerializer
+
+
+class UsersView(RetrieveModelMixin, UserGenericViewSet):
+    """View for user objects."""
+
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+
+    def retrieve(
+        self,
+        request: Request,
+        *args: Any,
+        **kwargs: Any,
+    ) -> Response:
+        pk = kwargs.pop("pk")
+        # If the user is requesting their own data (/users/me), then
+        # we will return the data of the authenticated user.
+        target = request.user if pk == "me" else get_user(pk)
+
+        serializer = self.get_serializer(target)
+        return Response(serializer.data, status=HTTP_200_OK)
