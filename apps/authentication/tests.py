@@ -12,7 +12,10 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
+from typing import Tuple, cast
+
 from django.urls import reverse
+from rest_framework.exceptions import ValidationError
 from rest_framework.status import HTTP_200_OK
 from rest_framework.test import APIRequestFactory, APITestCase
 
@@ -53,3 +56,61 @@ class TokenAuthenticationTestCase(APITestCase):
         expected = (self.user, self.user.token)
 
         self.assertTupleEqual(res, expected)
+
+    def test_authentication_with_invalid_token(self) -> None:
+        self.assertRaises(
+            ValidationError,
+            self.auth.validate_token,
+            "invalid_token",
+        )
+
+    def test_authentication_with_non_existing_user(self) -> None:
+        user = User(
+            id=100,
+            email="user@email.com",
+            username="user",
+            password="password",
+        )
+
+        self.assertRaises(
+            ValidationError, self.auth.validate_token, user.token
+        )
+
+    def test_authentication_with_no_header(self) -> None:
+        req = self.factory.get(self.url, self.payload)
+        self.assertIsNone(self.auth.authenticate(req))
+
+    def test_authentication_with_short_header(self) -> None:
+        req = self.factory.get(
+            self.url, self.payload, HTTP_AUTHORIZATION="Token"
+        )
+        self.assertIsNone(self.auth.authenticate(req))
+
+    def test_authentication_with_long_header(self) -> None:
+        req = self.factory.get(
+            self.url,
+            self.payload,
+            HTTP_AUTHORIZATION="Token invalid_token invalid_suffix",
+        )
+        self.assertIsNone(self.auth.authenticate(req))
+
+    def test_authentication_with_invalid_header_prefix(self) -> None:
+        req = self.factory.get(
+            self.url,
+            self.payload,
+            HTTP_AUTHORIZATION=f"Invalid {self.user.token}",
+        )
+        self.assertIsNone(self.auth.authenticate(req))
+
+    def test_authentication_with_valid_header(self) -> None:
+        req = self.factory.get(
+            self.url,
+            self.payload,
+            HTTP_AUTHORIZATION=f"Token {self.user.token}",
+        )
+
+        res = self.auth.authenticate(req)
+        expected = (self.user, self.user.token)
+
+        self.assertIsNotNone(res)
+        self.assertTupleEqual(cast(Tuple[User, str], res), expected)
