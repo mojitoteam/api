@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0 (2023-08-21)
+
+### Feat
+
+- **apps/users**: add the initial users view
+
 ## 0.4.0 (2023-08-06)
 
 ### Feat
