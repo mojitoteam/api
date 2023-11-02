@@ -8,7 +8,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-django = {version = "^4.2.4", extras = ["bcrypt"]}
+django = {version = "^4.2.7", extras = ["bcrypt"]}
 psycopg2 = "^2.9.6"
 djangorestframework = "^3.14.0"
 django-environ = "^0.10.0"
