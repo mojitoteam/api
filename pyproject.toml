@@ -17,22 +17,113 @@ itsdangerous = "^2.2.0"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.3.3"
-black = "^23.3.0"
-isort = "^5.12.0"
-commitizen = "^3.5.2"
-flake8 = "^6.0.0"
-mypy = "1.7.1"
 coverage = "^7.2.7"
 django-stubs = {extras = ["compatible-mypy"], version = "^4.2.7"}
 djangorestframework-stubs = {extras = ["compatible-mypy"], version = "^3.14.5"}
 
-[tool.black]
-color = true
+[tool.ruff]
+# Ruff configuration:
+# https://docs.astral.sh/ruff
+required-version = "0.4.0"
+target-version = "py312"
+
+show-fixes = true
+preview =  true
+output-format = "full"
+extend-exclude = ["apps/*/migrations/*"]
+
+fix = true
 line-length = 79
 
-[tool.isort]
-profile = "black"
-line_length = 79
+[tool.lint]
+select = [
+    "F",
+    "E",
+    "W",
+    "C90",
+    "I",
+    "N",
+    "UP",
+    "S",
+    "B",
+    "CPY",
+    "C4",
+    "DTZ",
+    "DJ",
+    "INP",
+    "SIM",
+    "PTH",
+    "PERF",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Ignore errors in specific files.
+# https://docs.astral.sh/ruff/settings/#extend-per-file-ignores
+"server/settings/development.py" = ["F403"]
+
+[tool.ruff.lint.pycodestyle]
+# pycodestyle configuration:
+# https://docs.astral.sh/ruff/settings/#pycodestyle
+max-doc-length = 72
+max-line-length = 79
+
+[tool.ruff.lint.mccabe]
+# mccabe configuration:
+# https://docs.astral.sh/ruff/settings/#mccabe
+max-complexity = 5
+
+[tool.ruff.lint.pydocstyle]
+# pydocstyle configuration:
+# https://docs.astral.sh/ruff/settings/#pydocstyle
+convention = "numpy"
+
+[tool.ruff.lint.flake8-copyright]
+# flake8-copyright configuration:
+# https://docs.astral.sh/ruff/settings/#flake8-copyright
+notice-rgx = "(?i)Copyright \\(C\\) Mojito Team"
+
+[tool.bandit]
+# Bandit configuration:
+# https://bandit.readthedocs.io/en/latest/config.html
+exclude_dirs = ["*/tests/*", "*/tests.py"]
+
+[tool.mypy]
+# Mypy configuration:
+# https://mypy.readthedocs.io/en/stable/config_file.html
+strict = true
+pretty = true
+
+disallow_any_unimported = true
+disallow_any_decorated = true
+disallow_any_generics = true
+disallow_subclassing_any = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_return_any = true
+warn_unreachable = true
+show_error_context = true
+show_column_numbers = true
+show_error_codes = true
+
+plugins = ["mypy_django_plugin.main", "mypy_drf_plugin.main"]
+
+[tool.django-stubs]
+# django-stubs configuration:
+# https://github.com/typeddjango/django-stubs
+django_settings_module = "server.settings"
+
+[tool.coverage.run]
+# coverage.py configuration for running tests:
+# https://coverage.readthedocs.io/en/7.4.0/config.html#run
+omit = ["server/asgi.py", "server/wsgi.py", "manage.py"]
+
+[tool.coverage.report]
+exclude_also = ["if TYPE_CHECKING:"]
 
 [tool.commitizen]
 version = "0.5.0"

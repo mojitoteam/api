@@ -6,38 +6,83 @@ repos:
     rev: v4.6.0
     hooks:
       - id: trailing-whitespace
+        name: 🔧 Trim trailing whitespace
       - id: end-of-file-fixer
+        name: 🔧 Fix end of files
       - id: check-yaml
-      - id: check-added-large-files
-      - id: check-shebang-scripts-are-executable
-      - id: check-symlinks
+        name: 📝 Check YAML files
+      - id: check-json
+        name: 📝 Check JSON files
       - id: check-toml
+        name: 📝 Check TOML files
+      - id: check-ast
+        name: 📝 Check Python AST syntax
+      - id: check-docstring-first
+        name: 📝 Check docstring first
+      - id: check-executables-have-shebangs
+        name: 📝 Check executables have shebangs
+      - id: check-shebang-scripts-are-executable
+        name: 📝 Check shebang scripts are executable
+      - id: pretty-format-json
+        name: 🔧 Pretty format JSON files
+        args:
+          - --autofix
+      - id: check-symlinks
+        name: 📝 Check symlinks
+      - id: destroyed-symlinks
+        name: 📝 Check destroyed symlinks
+      - id: check-added-large-files
+        name: 📝 Check added large files
       - id: detect-private-key
-      - id: end-of-file-fixer
+        name: 🔍 Detect private keys
+      - id: check-merge-conflict
+        name: 📝 Check merge conflict
+      - id: name-tests-test
+        name: 📝 Check test files naming convention
+        args:
+          - --django
+      - id: sort-simple-yaml
+        name: 📝 Sort simple YAML files
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.7.1
+    hooks:
+      - id: mypy
+        name: 🔧 Run static type checker (mypy)
+        additional_dependencies:
+          - django-stubs[compatible-mypy]>=4.2.7,<5.0.0
+          - djangorestframework-stubs[compatible-mypy]>=3.14.5,<4.0.0
+          - django-environ>=0.11.2,<1.0
+          - itsdangerous>=2.2.0,<3.0
+  - repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.10.0
+    hooks:
+      - id: python-check-blanket-type-ignore
+        name: 📝 Check type ignore annotations
+      - id: python-no-eval
+        name: 📝 Check eval() calls
   - repo: https://github.com/commitizen-tools/commitizen
     rev: v3.24.0
     hooks:
       - id: commitizen
+        name: 🔧 Run commitizen
       - id: commitizen-branch
-        stages: [push]
-  - repo: https://github.com/psf/black
-    rev: 24.4.0
+        name: 🔧 Run commitizen (branch)
+        stages:
+          - push
+  - repo: https://github.com/pycqa/bandit
+    rev: 1.7.8
     hooks:
-      - id: black
-  - repo: https://github.com/pycqa/isort
-    rev: 5.13.2
-    hooks:
-      - id: isort
-  - repo: https://github.com/pycqa/flake8
-    rev: 7.0.0
-    hooks:
-      - id: flake8
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.9.0
-    hooks:
-      - id: mypy
+      - id: bandit
+        name: 🔧 Run security linter (bandit)
+        args:
+          - -c
+          - pyproject.toml
         additional_dependencies:
-          - 'django-stubs>=4.2.7,<5.0'
-          - 'djangorestframework-stubs>=3.14.5,<5.0'
-          - 'django-environ>=0.11.2,<1.0'
-          - 'itsdangerous>=2.2.0,<3.0'
+          - bandit[toml]
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.0
+    hooks:
+      - id: ruff
+        name: 🔧 Run linter (ruff)
+      - id: ruff-format
+        name: 🔧 Run formatter (ruff)

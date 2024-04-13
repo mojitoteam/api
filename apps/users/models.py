@@ -12,8 +12,6 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from typing import cast
-
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db.models import BooleanField, CharField, EmailField
@@ -60,4 +58,4 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
             A token for the user.
         """
         serializer = URLSafeTimedSerializer(settings.SECRET_KEY, salt="auth")
-        return cast(str, serializer.dumps(self.id))
+        return serializer.dumps(self.id)

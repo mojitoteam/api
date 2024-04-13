@@ -127,13 +127,13 @@ PASSWORD_HASHERS = [
 # passwords. See Password validation for more details.
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
-BASE_PASSWORD_VALIDATOR = "django.contrib.auth.password_validation"
+BASE_VALIDATOR = "django.contrib.auth.password_validation"
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": f"{BASE_PASSWORD_VALIDATOR}.UserAttributeSimilarityValidator"},
-    {"NAME": f"{BASE_PASSWORD_VALIDATOR}.MinimumLengthValidator"},
-    {"NAME": f"{BASE_PASSWORD_VALIDATOR}.CommonPasswordValidator"},
-    {"NAME": f"{BASE_PASSWORD_VALIDATOR}.NumericPasswordValidator"},
+    {"NAME": f"{BASE_VALIDATOR}.UserAttributeSimilarityValidator"},
+    {"NAME": f"{BASE_VALIDATOR}.MinimumLengthValidator"},
+    {"NAME": f"{BASE_VALIDATOR}.CommonPasswordValidator"},
+    {"NAME": f"{BASE_VALIDATOR}.NumericPasswordValidator"},
 ]
 
 ###########################
