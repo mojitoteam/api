@@ -1,42 +1,32 @@
 services:
   django:
-    image: mojito-api:dev
-    container_name: django
+    container_name: api-django
     build:
       context: .
       dockerfile: docker/django/Dockerfile
       target: development
       args:
         - DJANGO_ENV=development
-        - UID=${UID:-1000}
-        - GID=${GID:-1000}
-      cache_from:
-        - "mojito-api:dev"
-        - "mojito-api:latest"
-        - "*"
     volumes:
       - .:/app
     ports:
       - 8000:8000
     networks:
-      - main
+      - database
     env_file:
-      - config/.env
+      - .env
     command: python -Wd manage.py runserver 0.0.0.0:8000
 
-  postgres:
+  postgresql:
     image: postgres:16.2-alpine
-    container_name: postgres
+    container_name: api-postgres
     volumes:
-      - data:/var/lib/postgresql/data
+      - .data/postgresql:/var/lib/postgresql/data
     networks:
-      - main
+      - database
     env_file:
-      - config/.env
+      - .env
     restart: unless-stopped
 
-volumes:
-  data:
-
 networks:
-  main:
+  database:

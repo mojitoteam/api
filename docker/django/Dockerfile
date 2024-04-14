@@ -2,15 +2,16 @@
 # to avoid installing unnecessary dependencies in the production image.
 # See: https://docs.docker.com/develop/develop-images/multistage-build/
 
-#######################
-#  Development stage  #
-#######################
+# Make sure that this version matches with asdf and Poetry:
+ARG PYTHON_VERSION=3.12.3
 
-FROM python:3.12.3-slim-bullseye AS development
+FROM python:${PYTHON_VERSION}-slim-bullseye AS development
+
+WORKDIR /app
 
 ARG DJANGO_ENV \
-  # This is needed to fix permissions of files created in the container, so
-  # that they are owned by the host user.
+  # This is needed to fix permissions of files created in
+  # the container, so that they are owned by the host user.
   UID=1000 \
   GID=1000
 
@@ -35,12 +36,10 @@ ENV DJANGO_ENV=${DJANGO_ENV} \
   # Dockerize:
   DOCKERIZE_VERSION=v0.7.0
 
-SHELL ["/bin/bash", "-eo", "pipefail", "-c"]
-
 # Install system dependencies:
-RUN apt-get update \
+RUN apt-get update -qq \
   && apt-get upgrade -y \
-  && apt-get install -y --no-install-recommends \
+  && apt-get install --no-install-recommends -y \
     bash \
     brotli \
     build-essential \
@@ -65,38 +64,27 @@ RUN apt-get update \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
+SHELL ["/bin/bash", "-eo", "pipefail", "-c"]
 
-# We create a non-root user to run the application, so that we don't run the
-# application as root.
+# We create a non-root user to run the application,
+# so that we don't run the application as root.
 RUN groupadd -g "${GID}" -r web \
   && useradd -d '/app' -g web -l -r -u "${UID}" web \
   && chown web:web -R '/app'
 
 COPY --chown=web:web ./poetry.lock ./pyproject.toml /app/
 
-RUN --mount=type=cache,target="$POETRY_CACHE_DIR" \
-  echo "${DJANGO_ENV}" \
+RUN --mount=type=cache,target="$POETRY_CACHE_DIR" echo "${DJANGO_ENV}" \
   && poetry version \
   && poetry run pip install --no-deps --upgrade pip \
   && poetry install \
     $(if [ "${DJANGO_ENV}" = 'production' ]; then echo '--only main'; fi) \
     --no-interaction --no-ansi
 
-COPY ./docker/django/entrypoint.sh /docker-entrypoint.sh
-
-RUN chmod +x '/docker-entrypoint.sh'
+# Entrypoint that runs migrations and starts the app.
+COPY docker/django/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 USER web
 
-# We customize how our app is loaded with the custom entrypoint:
-ENTRYPOINT ["tini", "--", "/docker-entrypoint.sh"]
-
-
-######################
-#  Production stage  #
-######################
-
-FROM development AS production
-
-COPY --chown=web:web . /app
+ENTRYPOINT ["tini", "--", "/usr/local/bin/entrypoint.sh"]

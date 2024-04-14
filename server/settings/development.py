@@ -26,9 +26,3 @@ ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 # production, like PBKDF2 or Argon2.
 
 PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
-
-#########################
-#  Django CORS Headers  #
-#########################
-
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
