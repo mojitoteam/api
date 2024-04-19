@@ -12,26 +12,25 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from os.path import join
+from pathlib import Path
 
-from server.settings import BASE_DIR, env
+from server.settings import env
 
-######################
-#  General Settings  #
-######################
+#
+# General Settings
+#
+
+BASE_DIR = Path(__file__).parent.parent.parent
 
 SECRET_KEY = env("DJANGO_SECRET_KEY", default="django-secret-key")
 
 DEBUG = env.bool("DJANGO_DEBUG", default=True)
 
-# We don't want to append a slash to the end of URLs, so we disable it.
-# This is because we want to use the same URLs schema for both the API
-# and the front-end.
-
 APPEND_SLASH = False
 
+#
 # Internationalization
-# https://docs.djangoproject.com/en/4.1/topics/i18n/
+#
 
 LANGUAGE_CODE = "en-us"
 
@@ -41,53 +40,32 @@ USE_I18N = True
 
 USE_TZ = True
 
-LOCALE_PATHS = [join(BASE_DIR, "locale")]
+#
+# Middlewares
+#
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
+MIDDLEWARE = ["django.middleware.common.CommonMiddleware"]
 
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-####################
-#  Authentication  #
-####################
-
-# The model to use to represent an user.
-# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-user-model
-
-AUTH_USER_MODEL = "users.User"
-
-#################
-#  Middlewares  #
-#################
-
-MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
-]
-
-###############
-#  Databases  #
-###############
+#
+# Databases
+#
 
 DATABASES = {"default": env.db()}
 
-##########
-#  URLs  #
-##########
+# Default primary key field type
+# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+#
+# URLs
+#
 
 ROOT_URLCONF = "server.urls"
 
-WSGI_APPLICATION = "server.wsgi.application"
-
-##########
-#  Apps  #
-##########
+#
+# Apps
+#
 
 DJANGO_APPS = [
     "django.contrib.auth",
@@ -104,21 +82,14 @@ LOCAL_APPS = [
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
-####################
-#  Authentication  #
-####################
+#
+# Authentication
+#
 
-AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend"]
+# The model to use to represent an user.
+# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-user-model
 
-###############
-#  Passwords  #
-###############
-
-PASSWORD_HASHERS = [
-    "django.contrib.auth.hashers.Argon2PasswordHasher",
-    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
-    "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
-]
+AUTH_USER_MODEL = "users.User"
 
 # The list of validators that are used to check the strength of user's
 # passwords. See Password validation for more details.
@@ -133,23 +104,21 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": f"{BASE_VALIDATOR}.NumericPasswordValidator"},
 ]
 
-###########################
-#  Django REST Framework  #
-###########################
+#
+# Django REST Framework
+#
 
-DEFAULT_VERSIONING_CLASS = "rest_framework.versioning.URLPathVersioning"
+DEFAULT_AUTHENTICATION_CLASSES = [
+    "apps.authentication.backend.TokenAuthentication",
+]
 
 TEST_REQUEST_DEFAULT_FORMAT = "json"
-
-DEFAULT_RENDERER_CLASSES = ["rest_framework.renderers.JSONRenderer"]
 
 DEFAULT_AUTHENTICATION_CLASSES = [
     "apps.authentication.backend.TokenAuthentication"
 ]
 
 REST_FRAMEWORK = {
-    "DEFAULT_VERSIONING_CLASS": DEFAULT_VERSIONING_CLASS,
     "TEST_REQUEST_DEFAULT_FORMAT": TEST_REQUEST_DEFAULT_FORMAT,
-    "DEFAULT_RENDERER_CLASSES": DEFAULT_RENDERER_CLASSES,
     "DEFAULT_AUTHENTICATION_CLASSES": DEFAULT_AUTHENTICATION_CLASSES,
 }

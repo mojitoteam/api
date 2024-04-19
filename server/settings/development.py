@@ -14,9 +14,9 @@ GNU General Public License for more details.
 
 from server.settings.base import *
 
-######################
-#  General Settings  #
-######################
+#
+# General Settings
+#
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
