@@ -20,6 +20,9 @@ pre-commit = "^3.3.3"
 coverage = "^7.2.7"
 django-stubs = {extras = ["compatible-mypy"], version = "^4.2.7"}
 djangorestframework-stubs = {extras = ["compatible-mypy"], version = "^3.14.5"}
+pytest = "^8.1.1"
+pytest-sugar = "^1.0.0"
+pytest-django = "^4.8.0"
 
 [tool.ruff]
 # Ruff configuration:
@@ -130,6 +133,10 @@ version = "0.5.0"
 version_files = ["pyproject.toml"]
 update_changelog_on_bump = true
 changelog_incremental = true
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "server.settings.development"
+python_files = ["*/tests/test_*.py", "*/tests.py"]
 
 [build-system]
 requires = ["poetry-core"]

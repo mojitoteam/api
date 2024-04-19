@@ -1,4 +1,4 @@
-name: Upload data to integrations
+name: 🗃 CI
 
 on:
   push:
@@ -7,56 +7,93 @@ on:
       - reopened
 
 jobs:
-  upload:
+  test:
     runs-on: ubuntu-latest
+    name: 🧪 Test the application
+    services:
+      postgresql:
+        image: postgres:16.2-alpine
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: mojito
+          POSTGRES_PASSWORD: mojito
+          POSTGRES_DB: mojito
     strategy:
       max-parallel: 4
       matrix:
-        python-version: ["3.12"]
-        poetry-version: ["1.8.2"]
-
+        python-version: ['3.12.3']
+        poetry-version: ['1.8.2']
     env:
-      DATABASE_URL: "sqlite:///db.sqlite3"
-      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-
+      DATABASE_URL: postgres://mojito:mojito@localhost:5432/mojito
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
+      - name: 📂 Checkout repository
+        uses: actions/checkout@v4
+      - name: 🐍 Setup Python (${{ matrix.python-version }})
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-
-      - name: Install Poetry ${{ matrix.poetry-version }}
+      - name: 📦 Install Poetry
         uses: snok/install-poetry@v1
         with:
           version: ${{ matrix.poetry-version }}
           virtualenvs-create: false
           installer-parallel: true
-
-      - name: Install dependencies
+      - name: 📦 Install dependencies
         run: |
           poetry run pip install --no-deps --upgrade pip
-          poetry install --with dev
-
-      - name: Generate configuration file
-        run: ./bin/create-env
-
-      - name: Generate tests coverage report
+          poetry install --with dev --no-interaction --no-ansi
+      - name: 🎣 Run pre-commit hooks
+        uses: pre-commit/action@v3.0.1
+      - name: 🧪 Run tests
+        run: poetry run pytest
+  upload:
+    runs-on: ubuntu-latest
+    name: 📈 Upload coverage report
+    services:
+      postgresql:
+        image: postgres:16.2-alpine
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: mojito
+          POSTGRES_PASSWORD: mojito
+          POSTGRES_DB: mojito
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: ['3.12.3']
+        poetry-version: ['1.8.2']
+    env:
+      DATABASE_URL: postgres://mojito:mojito@localhost:5432/mojito
+      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+    steps:
+      - name: 📂 Checkout repository
+        uses: actions/checkout@v4
+      - name: 🐍 Setup Python (${{ matrix.python-version }})
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: 📦 Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: ${{ matrix.poetry-version }}
+          virtualenvs-create: false
+          installer-parallel: true
+      - name: 📦 Install dependencies
         run: |
-          poetry run coverage run \
-            --source="." manage.py test \
-            --settings=server.settings.development
+          poetry run pip install --no-deps --upgrade pip
+          poetry install --with dev --no-interaction --no-ansi
+      - name: 📊 Generate coverage report
+        run: |
+          poetry run coverage run --source="." -m pytest
           poetry run coverage xml
-
-      - name: Upload tests coverage report (Codecov)
-        uses: codecov/codecov-action@v3
+      - name: 📈 Upload coverage report to Codecov
+        uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage.xml
-
-      - name: Upload tests coverage report (Code Climate)
-        uses: paambaati/codeclimate-action@v3.2.0
+      - name: 📈 Upload coverage report to Code Climate
+        uses: paambaati/codeclimate-action@v5.0.0
         with:
           coverageCommand: coverage report
