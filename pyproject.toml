@@ -5,9 +5,10 @@ description = "Repository for Mojito API service."
 authors = ["kyomi <me@kyomi.dev>"]
 license = "GPL-3.0"
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.12.3"
 django = {version = "^4.2.4", extras = ["bcrypt"]}
 psycopg2 = "^2.9.6"
 djangorestframework = "^3.14.0"

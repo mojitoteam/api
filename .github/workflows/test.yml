@@ -12,8 +12,8 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: ["3.11"]
-        poetry-version: ["1.5.1"]
+        python-version: ["3.12"]
+        poetry-version: ["1.8.2"]
 
     env:
       DATABASE_URL: "sqlite:///db.sqlite3"

@@ -6,7 +6,7 @@
 #  Development stage  #
 #######################
 
-FROM python:3.11.4-slim-buster AS development
+FROM python:3.12.3-slim-bullseye AS development
 
 ARG DJANGO_ENV \
   # This is needed to fix permissions of files created in the container, so
@@ -25,7 +25,7 @@ ENV DJANGO_ENV=${DJANGO_ENV} \
   PIP_DISABLE_PIP_VERSION_CHECK=1 \
   PIP_DEFAULT_TIMEOUT=100 \
   # Poetry:
-  POETRY_VERSION=1.5.1 \
+  POETRY_VERSION=1.8.2 \
   POETRY_NO_INTERACTION=1 \
   POETRY_VIRTUALENVS_CREATE=false \
   POETRY_CACHE_DIR='/var/cache/pypoetry' \
