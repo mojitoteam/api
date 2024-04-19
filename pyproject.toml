@@ -9,13 +9,11 @@ package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12.3"
-django = {version = "^4.2.4", extras = ["bcrypt"]}
-psycopg2 = "^2.9.6"
-djangorestframework = "^3.14.0"
-django-environ = "^0.10.0"
-itsdangerous = "^2.1.2"
-gunicorn = "^21.2.0"
-django-cors-headers = "^4.2.0"
+django = "^5.0.4"
+psycopg2 = "^2.9.9"
+djangorestframework = "^3.15.1"
+django-environ = "^0.11.2"
+itsdangerous = "^2.2.0"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.3.3"
@@ -23,10 +21,10 @@ black = "^23.3.0"
 isort = "^5.12.0"
 commitizen = "^3.5.2"
 flake8 = "^6.0.0"
-mypy = "^1.4.1"
+mypy = "1.7.1"
 coverage = "^7.2.7"
-django-stubs = {version = "^4.2.3", extras = ["compatible-mypy"]}
-djangorestframework-stubs = {version = "^3.14.2", extras = ["compatible-mypy"]}
+django-stubs = {extras = ["compatible-mypy"], version = "^4.2.7"}
+djangorestframework-stubs = {extras = ["compatible-mypy"], version = "^3.14.5"}
 
 [tool.poetry.group.docs]
 optional = true
