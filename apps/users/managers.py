@@ -15,6 +15,8 @@ GNU General Public License for more details.
 from typing import TYPE_CHECKING, Any
 
 from django.contrib.auth.models import BaseUserManager
+from django.contrib.auth.password_validation import validate_password
+from django.core.validators import validate_email
 
 if TYPE_CHECKING:
     from apps.users.models import User
@@ -26,7 +28,7 @@ class UserManager(BaseUserManager[User]):
     """Custom manager for the :class:`apps.users.models.User` model."""
 
     def create_user(self, username: str, email: str, password: str) -> User:
-        """Creates a new user.
+        """Creates a new user with the given data.
 
         Parameters
         ----------
@@ -42,7 +44,16 @@ class UserManager(BaseUserManager[User]):
         :class:`apps.users.models.User`
             A new user object with the provided data.
         """
-        user = self.model(username=username, email=self.normalize_email(email))
+        email = self.normalize_email(email)
+
+        # Run validators on the email and password to make sure they're
+        # valid. If they're not, an exception will be raised, but we
+        # don't need to catch it because it will be caught by the
+        # serializer.
+        validate_email(email)
+        validate_password(password)
+
+        user = self.model(username=username, email=email)
         user.set_password(password)
         user.save()
 
