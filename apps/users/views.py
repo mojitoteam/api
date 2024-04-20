@@ -12,23 +12,32 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from typing import TYPE_CHECKING
+from typing import cast
+from collections.abc import Sequence
 
-from rest_framework.mixins import CreateModelMixin
-from rest_framework.permissions import AllowAny
-from rest_framework.viewsets import GenericViewSet
+from rest_framework.serializers import BaseSerializer
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import BasePermission, AllowAny
 
 from apps.users.models import User
-from apps.users.serializers import CreateUserSerializer
-
-if TYPE_CHECKING:
-    UserGenericViewSet = GenericViewSet[User]
-else:
-    UserGenericViewSet = GenericViewSet
+from apps.users.serializers import UserSerializer, UserCreateSerializer
 
 
-class CreateUserView(CreateModelMixin, UserGenericViewSet):
-    """A viewset for creating users."""
+class UsersViewSet(ModelViewSet[User]):
+    """View set for the users endpoint."""
 
-    permission_classes = [AllowAny]
-    serializer_class = CreateUserSerializer
+    queryset = User.objects.all()
+    public_actions = ["create", "retrieve"]
+
+    def get_permissions(self) -> Sequence[BasePermission]:
+        # These actions are public and do not require authentication.
+        if self.action in self.public_actions:
+            return [AllowAny()]
+
+        return cast(Sequence[BasePermission], super().get_permissions())
+
+    def get_serializer_class(self) -> type[BaseSerializer[User]]:
+        if self.action == "create":
+            return UserCreateSerializer
+
+        return UserSerializer
