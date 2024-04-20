@@ -136,7 +136,7 @@ changelog_incremental = true
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "server.settings.development"
-python_files = ["*/tests/test_*.py", "*/tests.py"]
+python_files = ["*/tests/test_*.py"]
 
 [build-system]
 requires = ["poetry-core"]
