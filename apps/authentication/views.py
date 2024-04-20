@@ -16,19 +16,15 @@ from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
-from rest_framework.views import APIView
+from rest_framework.decorators import api_view, permission_classes
 
 from apps.authentication.serializers import LoginSerializer
 
 
-class LoginView(APIView):
-    """View for logging in a user."""
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def login(request: Request) -> Response:
+    serializer = LoginSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
 
-    permission_classes = [AllowAny]
-    serializer_class = LoginSerializer
-
-    def post(self, request: Request) -> Response:
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        return Response(serializer.data, status=HTTP_200_OK)
+    return Response(serializer.data, status=HTTP_200_OK)

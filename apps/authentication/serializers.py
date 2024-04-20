@@ -12,44 +12,42 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from typing import Optional, TypedDict, cast
+from typing import TypedDict, cast
 
 from django.contrib.auth import authenticate
-from django.utils.translation import gettext as _
-from rest_framework.exceptions import NotAuthenticated
-from rest_framework.fields import CharField, EmailField
+from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.serializers import Serializer
+from rest_framework.fields import EmailField, CharField
 
 from apps.users.models import User
 
 
-class LoginRequestDict(TypedDict):
+class LoginRequest(TypedDict):
+    """Type definition for the request body of the login endpoint."""
+
     email: str
     password: str
 
 
-class LoginResponseDict(TypedDict):
+class LoginResponse(TypedDict):
+    """Type definition for the response body of the login endpoint."""
+
     token: str
 
 
-class LoginSerializer(Serializer[LoginResponseDict]):
-    """Serializer for logging in a user."""
+class LoginSerializer(Serializer[LoginRequest]):
+    """Serializer for logging in an user."""
 
-    email = EmailField(max_length=256, write_only=True, required=True)
-    password = CharField(max_length=128, write_only=True, required=True)
-    token = CharField(max_length=256, read_only=True)
+    email = EmailField(max_length=80, write_only=True, required=True)
+    password = CharField(
+        min_length=8, max_length=120, write_only=True, required=True
+    )
+    token = CharField(read_only=True)
 
-    def validate(self, attrs: LoginRequestDict) -> LoginResponseDict:
-        email = attrs["email"]
-        password = attrs["password"]
-
-        user = cast(
-            Optional[User], authenticate(username=email, password=password)
-        )
+    def validate(self, attrs: LoginRequest) -> LoginResponse:
+        user = cast(User | None, authenticate(**attrs))
 
         if user is None or not user.is_active:
-            raise NotAuthenticated(
-                _("Unable to login with provided credentials.")
-            )
+            raise AuthenticationFailed()
 
         return {"token": user.token}

@@ -12,12 +12,12 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from django.urls import re_path
+from django.urls import path
 
-from apps.authentication.views import LoginView
+from apps.authentication.views import login
 
 app_name = "authentication"
 
 urlpatterns = [
-    re_path(r"^auth/login/?$", LoginView.as_view(), name="login"),
+    path("auth/login", login, name="login"),
 ]
