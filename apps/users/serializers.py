@@ -20,22 +20,32 @@ from rest_framework.validators import UniqueValidator
 from apps.users.models import User
 
 
-class SelfUserSerializer(ModelSerializer[User]):
-    """Serializer for the current user."""
+class CreateUserSerializer(ModelSerializer[User]):
+    """Serializer for creating users."""
 
-    username = CharField(
-        min_length=3,
-        max_length=32,
-        write_only=True,
-        validators=[UniqueValidator(queryset=User.objects.all())],
-    )
     email = EmailField(
-        max_length=256,
+        max_length=80,
         write_only=True,
-        validators=[UniqueValidator(queryset=User.objects.all())],
+        validators=[
+            UniqueValidator(
+                queryset=User.objects.all(),
+                message="This email is already in use.",
+            ),
+        ],
+    )
+    username = CharField(
+        min_length=2,
+        max_length=20,
+        write_only=True,
+        validators=[
+            UniqueValidator(
+                queryset=User.objects.all(),
+                message="This username is already in use.",
+            ),
+        ],
     )
     password = CharField(min_length=8, max_length=128, write_only=True)
-    token = CharField(max_length=256, read_only=True)
+    token = CharField(max_length=128, read_only=True)
 
     class Meta:
         model = User
@@ -43,12 +53,3 @@ class SelfUserSerializer(ModelSerializer[User]):
 
     def create(self, validated_data: Dict[str, str]) -> User:
         return User.objects.create_user(**validated_data)
-
-
-class UserSerializer(ModelSerializer[User]):
-    """Serializer for the users."""
-
-    class Meta:
-        model = User
-        fields = ["id", "username", "created_at"]
-        read_only_fields = fields

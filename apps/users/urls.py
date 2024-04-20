@@ -14,12 +14,11 @@ GNU General Public License for more details.
 
 from rest_framework.routers import SimpleRouter
 
-from apps.users.views import SelfUserView, UsersView
+from apps.users.views import CreateUserView
 
 app_name = "users"
 
 router = SimpleRouter(trailing_slash=False)
-router.register(r"users", SelfUserView, basename="self-user")
-router.register(r"users", UsersView, basename="users")
+router.register(r"users", CreateUserView, basename="create-user")
 
 urlpatterns = router.urls
