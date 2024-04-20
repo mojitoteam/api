@@ -20,14 +20,18 @@ from itsdangerous import URLSafeTimedSerializer
 from apps.users.managers import UserManager
 from core.models import TimestampedModel
 
+serializer = URLSafeTimedSerializer(settings.SECRET_KEY, salt="auth")
 
+
+# TODO: Improve the docstring of this class.
 class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     """Represents an user."""
 
     id: int
 
-    email = EmailField(db_index=True, max_length=256, unique=True)
-    username = CharField(db_index=True, max_length=32, unique=True)
+    email = EmailField(db_index=True, max_length=80, unique=True)
+    username = CharField(db_index=True, max_length=20, unique=True)
+    password = CharField(max_length=120)
 
     # When a user no longer wishes to use our platform, they may try to
     # delete there account. That's a problem for us because the data we
@@ -50,12 +54,12 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     @property
     def token(self) -> str:
         """Creates a token for the user. This token is used to verify
-        the user authenticity when they make requests to the API.
+        the user authenticity when they make requests to the API, which
+        is sent in the authorization header.
 
         Returns
         -------
         :class:`str`
             A token for the user.
         """
-        serializer = URLSafeTimedSerializer(settings.SECRET_KEY, salt="auth")
         return serializer.dumps(self.id)
