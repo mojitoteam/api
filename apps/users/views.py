@@ -17,20 +17,27 @@ from collections.abc import Sequence
 
 from rest_framework.serializers import BaseSerializer
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import BasePermission, AllowAny
+from rest_framework.permissions import (
+    BasePermission,
+    AllowAny,
+    IsAuthenticated,
+)
 
 from apps.users.models import User
 from apps.users.serializers import UserSerializer, UserCreateSerializer
+from apps.users.permissions import OwnerOnly
 
 
 class UsersViewSet(ModelViewSet[User]):
     """View set for the users endpoint."""
 
     queryset = User.objects.all()
+    permission_classes = [IsAuthenticated & OwnerOnly]
+
+    # Actions that don't require authentication to be performed.
     public_actions = ["create", "retrieve"]
 
     def get_permissions(self) -> Sequence[BasePermission]:
-        # These actions are public and do not require authentication.
         if self.action in self.public_actions:
             return [AllowAny()]
 
