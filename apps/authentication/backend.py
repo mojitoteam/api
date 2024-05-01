@@ -12,8 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from django.conf import settings
-from itsdangerous import BadSignature, URLSafeTimedSerializer
+from itsdangerous import BadSignature
 from rest_framework.authentication import (
     BaseAuthentication,
     get_authorization_header,
@@ -22,10 +21,11 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.request import Request
 
 from apps.users.models import User
+from apps.users import serializer
 
 
 class TokenAuthentication(BaseAuthentication):
-    """This class is responsible for authenticating an user."""
+    """Class is responsible for authenticating an user."""
 
     header_prefix = "Bearer"
 
@@ -47,8 +47,6 @@ class TokenAuthentication(BaseAuthentication):
         return self.header_prefix
 
     def validate_token(self, token: str) -> tuple[User, str]:
-        serializer = URLSafeTimedSerializer(settings.SECRET_KEY, salt="auth")
-
         try:
             user_id = serializer.loads(token)
             user = User.objects.get(id=user_id)

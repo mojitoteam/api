@@ -13,14 +13,10 @@ GNU General Public License for more details.
 """
 
 from django.apps import AppConfig
-from django.conf import settings
 
-from itsdangerous import Serializer
-
-default_app_config = "apps.users.UsersConfig"
-serializer = Serializer(settings.SECRET_KEY, salt="auth")
+default_app_config = "apps.users.ContestsConfig"
 
 
-class UsersConfig(AppConfig):
+class ContestsConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "apps.users"
+    name = "apps.contests"

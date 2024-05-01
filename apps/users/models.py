@@ -12,18 +12,14 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db.models import BooleanField, CharField, EmailField
-from itsdangerous import URLSafeTimedSerializer
 
 from apps.users.managers import UserManager
+from apps.users import serializer
 from core.models import TimestampedModel
 
-serializer = URLSafeTimedSerializer(settings.SECRET_KEY, salt="auth")
 
-
-# TODO: Improve the docstring of this class.
 class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     """Represents an user."""
 
